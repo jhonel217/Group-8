@@ -1,0 +1,85 @@
+def decimal_to_base5(decimal):
+    """
+    Convert a decimal (base-10) number to base-5.
+    
+    Args:
+    decimal (int): The decimal number to convert.
+    
+    Returns:
+    str: The base-5 representation of the input decimal number.
+    """
+    if decimal == 0:
+        return "0"
+    
+    base5 = ""
+    negative = decimal < 0
+    decimal = abs(decimal)
+    
+    while decimal > 0:
+        remainder = decimal % 5
+        base5 = str(remainder) + base5
+        decimal //= 5
+    
+    return "-" + base5 if negative else base5
+
+def base5_to_decimal(base5):
+    """
+    Convert a base-5 number to decimal (base-10).
+    
+    Args:
+    base5 (str): The base-5 number to convert.
+    
+    Returns:
+    int: The decimal representation of the input base-5 number.
+    """
+    decimal = 0
+    power = 0
+    negative = base5.startswith("-")
+    base5 = base5.lstrip("-")
+    
+    for digit in reversed(base5):
+        if not 0 <= int(digit) <= 4:
+            raise ValueError("Invalid base-5 digit")
+        decimal += int(digit) * (5 ** power)
+        power += 1
+    
+    return -decimal if negative else decimal
+
+def main():
+    """
+    Main function to run the Base-10 Base-5 Calculator.
+    """
+    print("Welcome to the Base-10 Base-5 Calculator!")
+    print("1. Convert Decimal (Base-10) to Base-5")
+    print("2. Convert Base-5 to Decimal (Base-10)")
+    
+    while True:
+        choice = input("Enter your choice (1 or 2), or 'q' to quit: ")
+        
+        if choice == 'q':
+            print("Thank you for using the calculator. Goodbye!")
+            break
+        
+        elif choice == '1':
+            try:
+                decimal = int(input("Enter a decimal number: "))
+                base5 = decimal_to_base5(decimal)
+                print(f"The base-5 representation of {decimal} is: {base5}")
+            except ValueError:
+                print("Invalid input. Please enter a valid integer.")
+        
+        elif choice == '2':
+            base5 = input("Enter a base-5 number: ")
+            try:
+                decimal = base5_to_decimal(base5)
+                print(f"The decimal representation of {base5} is: {decimal}")
+            except ValueError:
+                print("Invalid input. Please enter a valid base-5 number.")
+        
+        else:
+            print("Invalid choice. Please enter 1, 2, or 'q'.")
+        
+        print()  # Add a blank line for readability
+
+if __name__ == "__main__":
+    main()
